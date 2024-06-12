@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wishlist</h1>
+    <table id="wishlistTable">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Wishlist items will be populated here -->
+        </tbody>
+    </table>
+
+    <div class="form-container">
+        <h2>Add to Wishlist</h2>
+        <form id="addForm">
+            <label for="title">Book Title:</label>
+            <input type="text" id="title" name="title" required>
+            <br>
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required>
+            <br>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required>
+            <br>
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const quantity = document.getElementById('quantity').value;
+
+            fetch('/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, author, quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addItemToTable(data.item);
+                }
+            });
+        });
+
+        function addItemToTable(item) {
+            const table = document.getElementById('wishlistTable').getElementsByTagName('tbody')[0];
+            const row = table.insertRow();
+            row.insertCell(0).innerText = item.title;
+            row.insertCell(1).innerText = item.author;
+            row.insertCell(2).innerText = item.quantity;
+            const deleteCell = row.insertCell(3);
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Remove';
+            deleteButton.onclick = () => removeItem(item.id, row);
+            deleteCell.appendChild(deleteButton);
+        }
+
+        function removeItem(id, row) {
+            fetch(`/remove/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    row.remove();
+                }
+            });
+        }
+
+        function loadWishlist() {
+            fetch('/wishlist')
+            .then(response => response.json())
+            .then(data => {
+                data.items.forEach(item => addItemToTable(item));
+            });
+        }
+
+        window.onload = loadWishlist;
+    </script>
+</body>
+</html>
