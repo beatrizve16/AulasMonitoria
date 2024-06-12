@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Api Monitoria</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="body">
+  <header>
+    <nav>
+      <p class="fontNav" id="Kayna">Cainã's</p>
+      <p class="fontNav" id="bookstore">bookstore & café</p>
+      <img src="Icones/Icone Estrela.png" alt="" id="IconeEstrela">
+    </nav>
+  </header>
+  <main>
+    <a href="wishlist.html">
+      <div id="wishlistContainer">
+        <p>Wish List</p>
+      </div>
+    </a>
+    <div class="imageContainer">
+      <img src="" alt="">
+    </div>
+  </main>
+  <footer></footer>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wish List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="body">
+  <header>
+    <nav>
+      <p class="fontNav" id="Kayna">Wish List</p>
+    </nav>
+  </header>
+  <main>
+    <div id="wishlistContent">
+      <div id="tableContainer">
+        <table id="wishlistTable">
+          <thead>
+            <tr>
+              <th>Nome do Livro</th>
+              <th>Autor</th>
+              <th>Quantidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rows will be added here -->
+          </tbody>
+        </table>
+      </div>
+      <div id="formContainer">
+        <form id="wishlistForm">
+          <input type="text" id="bookName" placeholder="Nome do Livro" required>
+          <input type="text" id="author" placeholder="Autor" required>
+          <input type="number" id="quantity" placeholder="Quantidade" required>
+          <button type="submit">Adicionar</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+/* Estilos gerais */
+body {
+    background-image: url('img/imagemApi.jpeg');
+    background-size: cover;
+    background-position: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: #FFF4EB;
+}
+
+/* Estilos do nav */
+nav {
+    display: flex;
+    padding: 5px;
+    background-color: #C0B5AB;
+    height: 100px; /* Altura ajustada para ser menor */
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Para alinhar itens com position: absolute */
+}
+
+#Kayna {
+    color: #5D412E;
+    font-size: 64px; /* Fonte reduzida */
+    position: absolute;
+    top: 2px;
+    left: 20px; /* Mudança da posição para a esquerda */
+}
+
+#bookstore {
+    color: #FFF4EB;
+    position: absolute;
+    top: 40px; /* Ajustado para caber na nova altura */
+    left: 20px; /* Mudança da posição para a esquerda */
+    font-size: 25px;
+}
+
+#IconeEstrela {
+    height: 40px;
+    position: absolute;
+    top: 40px; /* Ajustado para caber na nova altura */
+    right: 20px;
+    color: #FFF4EB;
+}
+
+.fontNav {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: large;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Estilos da página inicial */
+main {
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#wishlistContainer {
+    height: 100px;
+    width: 220px;
+    background-color: #5D412E;
+    border-radius: 50px;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: #FFF4EB;
+    font-size: xx-large;
+}
+
+/* Estilos da página Wish List */
+#wishlistContent {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 20px;
+}
+
+#tableContainer, #formContainer {
+    background-color: #5D412E;
+    border-radius: 20px;
+    padding: 20px;
+    width: 45%;
+}
+
+#wishlistTable {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+#wishlistTable th, #wishlistTable td {
+    border: 1px solid #FFF4EB;
+    padding: 10px;
+    text-align: left;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input, form button {
+    margin: 5px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #C0B5AB;
+    color: #5D412E;
+    font-size: large;
+    cursor: pointer;
+}
+
+
+
+document.getElementById('wishlistForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  const bookName = document.getElementById('bookName').value;
+  const author = document.getElementById('author').value;
+  const quantity = document.getElementById('quantity').value;
+
+  const table = document.getElementById('wishlistTable').getElementsByTagName('tbody')[0];
+  const newRow = table.insertRow();
+
+  const cell1 = newRow.insertCell(0);
+  const cell2 = newRow.insertCell(1);
+  const cell3 = newRow.insertCell(2);
+  const cell4 = newRow.insertCell(3);
+
+  cell1.textContent = bookName;
+  cell2.textContent = author;
+  cell3.textContent = quantity;
+  cell4.innerHTML = '<button onclick="removeRow(this)">Remover</button>';
+
+  document.getElementById('wishlistForm').reset();
+});
+
+function removeRow(button) {
+  const row = button.parentElement.parentElement;
+  row.remove();
+}
+
+
+
+
+
+
+
+
+
+
